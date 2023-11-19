@@ -28,7 +28,7 @@ public class Ball : MonoBehaviour
     void Jump()
     {
         rb.velocity += Vector2.up * jumpSpeed;
-        isGrounded = false;
+        
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -36,6 +36,23 @@ public class Ball : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = false;
+        }
+
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.name == "Teleporter")
+        {
+            FindObjectOfType<GameManager>().Win();
         }
     }
 }
