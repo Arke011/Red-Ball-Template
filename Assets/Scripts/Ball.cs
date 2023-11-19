@@ -41,28 +41,11 @@ public class Ball : MonoBehaviour
         if (collision.gameObject.CompareTag("enemy"))
         {
             FindObjectOfType<GameManager>().Lose();
-            DestroyPlayerIntoParticles();
+            Destroy(gameObject);
         }
     }
 
-    void DestroyPlayerIntoParticles()
-    {
-        // Bonus: Destroy the player into particles
-        // You can use a particle system or instantiate particles manually
-        // Here is a simple example using Instantiate for particles
 
-        int numParticles = 10;
-        for (int i = 0; i < numParticles; i++)
-        {
-            Vector3 particlePosition = transform.position + Random.onUnitSphere * 0.5f;
-            GameObject particle = Instantiate(gameObject, particlePosition, Quaternion.identity);
-            Rigidbody2D particleRb = particle.GetComponent<Rigidbody2D>();
-            particleRb.velocity = Random.onUnitSphere * 2f;
-            Destroy(particle, 2f);
-        }
-
-        Destroy(gameObject); // Destroy the original player
-    }
 
     void OnCollisionExit2D(Collision2D collision)
     {
