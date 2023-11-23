@@ -12,15 +12,22 @@ public class GameManager : MonoBehaviour
     bool hasWon;
     float targetTransitionScale;
     public Transform transition;
+
+    public AudioSource source;
+    public AudioClip winSound;
+    public AudioClip loseSound;
+    public AudioClip gameOverSound;
     
    
 
 
     void Start()
     {
+        
         DontDestroyOnLoad(gameObject);
     }
 
+    
     void Update()
     {
         transition.localScale = Vector3.MoveTowards(transition.localScale, 
@@ -31,6 +38,7 @@ public class GameManager : MonoBehaviour
     public void Win()
     {
         if (hasWon) return;
+        source.PlayOneShot(winSound);
         currentLevel++;
         hasWon = true;
         targetTransitionScale = 80;
@@ -51,21 +59,22 @@ public class GameManager : MonoBehaviour
 
     public void Lose()
     {
-        hp--; // Reduce HP when the player loses
+        hp--; 
 
         if (hp > 0)
         {
-            // Player still has some HP, play transition and restart the current level
+            source.PlayOneShot(loseSound);
             targetTransitionScale = 80;
             Invoke("RestartCurrentLevel", 1f);
         }
         else
         {
+            source.PlayOneShot(gameOverSound);
             hasWon = false;
             hp = 3;
             targetTransitionScale = 0;
 
-            SceneManager.LoadScene("Showcase");
+            SceneManager.LoadScene("Level1");
             currentLevel = 0;
             
         }
@@ -73,16 +82,9 @@ public class GameManager : MonoBehaviour
 
     void RestartCurrentLevel()
     {
-        // Set the transition scale to 0 before reloading the scene
+        
         targetTransitionScale = 0;
 
-
-        
-        
-        
-        
-
-       
         Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(currentScene.name);
     }
