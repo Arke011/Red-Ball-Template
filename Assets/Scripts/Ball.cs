@@ -33,15 +33,17 @@ public class Ball : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = true;
-        }
+        isGrounded = true;
 
         if (collision.gameObject.CompareTag("enemy"))
         {
             FindObjectOfType<GameManager>().Lose();
             Destroy(gameObject);
+        }
+
+        if (collision.gameObject.CompareTag("coin"))
+        {
+            Destroy(collision.gameObject);
         }
     }
 
@@ -49,10 +51,7 @@ public class Ball : MonoBehaviour
 
     void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = false;
-        }
+        isGrounded = false;
 
     }
 
@@ -61,6 +60,11 @@ public class Ball : MonoBehaviour
         if (other.gameObject.name == "Teleporter")
         {
             FindObjectOfType<GameManager>().Win();
+        }
+
+        if (other.gameObject.CompareTag("coin"))
+        {
+            Destroy(other.gameObject);
         }
     }
 }
