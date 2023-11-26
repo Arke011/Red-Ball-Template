@@ -5,19 +5,27 @@ using UnityEngine.SceneManagement;
 
 public class Ball : MonoBehaviour
 {
+    public float speedLimit = 10;
     private Rigidbody2D rb;
     private bool isGrounded;
     public int jumpSpeed;
     public float moveForce;
+    public GameObject gameManager;
+
     void Start()
     {
+        Instantiate(gameManager);
         rb = GetComponent<Rigidbody2D>();
     }
 
+    
     void Update()
     {
         var hor = Input.GetAxisRaw("Horizontal");
-        rb.AddForce(new Vector2(hor, 0) * moveForce);
+        rb.AddForce(new Vector2(hor, 0) * moveForce * Time.deltaTime);
+
+        if (rb.velocity.x > speedLimit) rb.velocity = new Vector2(speedLimit, rb.velocity.y);
+        if (rb.velocity.x < -speedLimit) rb.velocity = new Vector2(-speedLimit, rb.velocity.y);
 
         if (isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
@@ -27,6 +35,7 @@ public class Ball : MonoBehaviour
 
     void Jump()
     {
+
         rb.velocity += Vector2.up * jumpSpeed;
         
     }

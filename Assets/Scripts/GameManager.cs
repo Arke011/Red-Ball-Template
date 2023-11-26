@@ -23,13 +23,23 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        Application.targetFrameRate = 60;
+
         
+
         DontDestroyOnLoad(gameObject);
+
+        if (FindObjectsOfType<GameManager>().Length > 1)
+        {
+            Destroy(gameObject);
+        }
     }
 
     
     void Update()
     {
+        var targetV3 = Vector3.one * targetTransitionScale;
+
         transition.localScale = Vector3.MoveTowards(transition.localScale, 
             Vector3.one * targetTransitionScale, 
             60 * Time.deltaTime);
@@ -74,7 +84,7 @@ public class GameManager : MonoBehaviour
             hp = 3;
             targetTransitionScale = 0;
 
-            SceneManager.LoadScene("Level1");
+            SceneManager.LoadScene("Level5");
             currentLevel = 0;
             
         }
